@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="Git_Project1" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="Git_Project1" uploadOnCheckin="987c1097-00e4-49dd-ad2e-0b6c59aa3085" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="Git_Project1">
         <serverdata>
@@ -10,5 +10,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myUploadOnCheckinName" value="Git_Project1" />
   </component>
 </project>
