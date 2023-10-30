@@ -14,6 +14,7 @@ Start = Pin(13, Pin.IN)
 Stop = Pin(12, Pin.IN)
 Reset = Pin(27, Pin.IN)
 
+
 # Adjustments
 blink_interval = 500  # Time in milliseconds for the red LED to blink.
 speed = str(1000)  # Motor speed during operation.
@@ -24,6 +25,7 @@ Runtime = 20000  # Time in ms after which the motor automatically stops.
 last_blink_time = 0
 status = 0
 Timer = 0
+Readable_Variables = ["GRC", "GV", "TEM", "POS"]
 
 # Status can be 1 = Stopped, 2 = Running, or 3 = Error.
 while True:
@@ -67,18 +69,27 @@ while True:
         LED_Red.value(1)
         if Reset.value():
             status = 0
-    time.sleep_ms(10)
+    time.sleep_ms(100)
 
-    # Detect maximum current
-    uart.write("GRC\r\n")
+    # Read all Values that are declared in Readable_Variables
+
+    uart.write("\r\n".join(Readable_Variables) + "\r\n")
     data = uart.read()
-    if data and not status == 2:
-        try:
-            data = data.decode("utf-8")
-            data = data.strip()
-            data_as_float = float(data)
-            if data_as_float > Error_Current:
+    if data and status != 2:
+        received_values = data[:-2].decode().split('\r\n')
+
+        if len(received_values) == len(Readable_Variables):
+            for i in range(len(Readable_Variables)):
+                exec(f"{Readable_Variables[i]} = int(received_values[i])")
+
+            if GRC > Error_Current:
                 print("Maximum current exceeded")
                 status = 2
-        except:
-            pass
+            print("GRC:", TEM)
+            print("GV:", GV)
+            print("GRC:", GRC)
+            print("POS:", POS)
+
+
+
+
